@@ -7,10 +7,10 @@ all: traffic
 
 # compile main module
 
-traffic: traffic.o mathfunctions.o output.o
+traffic: traffic.o mathfunctions.o filemodule.o arrayinit.o
 	${CC} ${CFLAGS} -o $@ $^
 
-traffic.o: traffic.cc mathfunctions.h output.h
+traffic.o: traffic.cc mathfunctions.h filemodule.h arrayinit.h
 	${CC} ${CFLAGS} -c -o $@ $<
 
 # compile other modules
@@ -18,9 +18,12 @@ traffic.o: traffic.cc mathfunctions.h output.h
 mathfunctions.o: mathfunctions.cc mathfunctions.h
 	${CC} ${CFLAGS} -c -o $@ $<
 
-output.o: output.cc output.h
+filemodule.o: filemodule.cc filemodule.h
+	${CC} ${CFLAGS} -c -o $@ $<
+
+arrayinit.o: arrayinit.cc arrayinit.h mathfunctions.h
 	${CC} ${CFLAGS} -c -o $@ $<
 
 clean:
-	${CLEAN} traffic.o mathfunctions.o output.o
+	${CLEAN} traffic.o mathfunctions.o filemodule.o arrayinit.o
 	${CLEAN} traffic

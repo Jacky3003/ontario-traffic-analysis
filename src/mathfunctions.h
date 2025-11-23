@@ -1,3 +1,7 @@
+/**
+ * Module to support custom mathematical operations
+ * as part of the program.
+ */
 #include <math.h>
 
 /// @brief function that samples discrete values from
@@ -9,12 +13,3 @@
 /// @return the calculated value
 ///
 double asinx(double a, double x);
-
-/// @brief function that calculates the natural logarithm
-///        in ln(x) + 1
-///
-/// @param  x          passed in value for x
-///
-/// @return the calculated value
-///
-double lnx(double x);
