@@ -10,9 +10,17 @@ int main(int argc, char *argv[]){
     // parse file path (if given)
     std::string file_path = (argc>1) ? argv[1]:"";
 
-    // basic parameters
-    int timesteps = 1000;
-    int road_len = (file_path.length() == 0) ? 10: file_road_size(file_path);
+    // TODO: MPI parameters
+
+    // TODO: file defined parameters set on process 0 should be broadcast on MPI
+    int road_len;
+    road_len = (file_path.length() == 0) ? 10: file_road_size(file_path);
+    NetFile netcdf_file("results.nc");
+    if (netcdf_file.err_status == 1)
+        return netcdf_file.err_status;
+
+    // parameters per process
+    int timesteps = 100;
     int scaling_factor = 100;
     double x_delta = (double)(1.0/road_len);
     double t_delta = (double)(1.0/timesteps);
@@ -20,8 +28,6 @@ int main(int argc, char *argv[]){
     double max_velocity = 1.0;
     rarray<double, 1> road_vals(road_len);
     rarray<double, 1> new_road_vals(road_len);
-
-    // TODO: MPI parameters
 
     // initalize values for array at t = 0
     if (file_path.length() == 0)
@@ -70,6 +76,10 @@ int main(int argc, char *argv[]){
         // write to netCDF
         // TODO: use MPI gather to collect results to consolodate the writing
     }
+
+    // close netCDF file
+    netcdf_file.close();
+    
     // close MPI
     return 0;
 }

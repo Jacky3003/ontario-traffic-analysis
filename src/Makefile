@@ -1,5 +1,6 @@
 CC = g++
 CFLAGS = -O3 --std=c++14
+LDFLAGS = -lnetcdf
 
 CLEAN = rm -f
 
@@ -8,7 +9,7 @@ all: traffic
 # compile main module
 
 traffic: traffic.o mathfunctions.o filemodule.o arrayinit.o
-	${CC} ${CFLAGS} -o $@ $^
+	${CC} ${CFLAGS} -o $@ $^ ${LDFLAGS}
 
 traffic.o: traffic.cc mathfunctions.h filemodule.h arrayinit.h
 	${CC} ${CFLAGS} -c -o $@ $<
@@ -27,3 +28,4 @@ arrayinit.o: arrayinit.cc arrayinit.h mathfunctions.h
 clean:
 	${CLEAN} traffic.o mathfunctions.o filemodule.o arrayinit.o
 	${CLEAN} traffic
+	${CLEAN} results.nc
