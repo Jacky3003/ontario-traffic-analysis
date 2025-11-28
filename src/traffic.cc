@@ -12,15 +12,12 @@ int main(int argc, char *argv[]){
 
     // TODO: MPI parameters
 
-    // TODO: file defined parameters set on process 0 should be broadcast on MPI
+    // TODO: relevant file defined parameters set on process 0 should be broadcast on MPI
     int road_len;
-    road_len = (file_path.length() == 0) ? 10: file_road_size(file_path);
-    NetFile netcdf_file("results.nc");
-    if (netcdf_file.err_status == 1)
-        return netcdf_file.err_status;
+    road_len = (file_path.length() == 0) ? 100: file_road_size(file_path);
 
     // parameters per process
-    int timesteps = 100;
+    int timesteps = 10000;
     int scaling_factor = 100;
     double x_delta = (double)(1.0/road_len);
     double t_delta = (double)(1.0/timesteps);
@@ -28,6 +25,11 @@ int main(int argc, char *argv[]){
     double max_velocity = 1.0;
     rarray<double, 1> road_vals(road_len);
     rarray<double, 1> new_road_vals(road_len);
+
+    // set up netCDF for process 0
+    
+    NetFile netcdf_file("results.nc", road_len);
+    netcdf_file.define_file(road_len, timesteps + 1);
 
     // initalize values for array at t = 0
     if (file_path.length() == 0)
@@ -39,10 +41,11 @@ int main(int argc, char *argv[]){
     // TODO: use MPI reductions to distribute the max element from root
     double max_density = *std::max_element(road_vals.begin(), road_vals.end());
 
-    // TODO: use MPI Scatter to distribute the array amongst local arrays with ghost cells
+    // inital netCDF write
+    netcdf_file.write(road_vals);
 
+    // TODO: use MPI Scatter to distribute the array amongst local arrays with ghost cells
     for(int t = 0; t < timesteps; t++){
-        std::cout << "Timestep " << t << ":" << road_vals << std::endl;
         // TODO: use MPI sends and recieves to update ghost cells
 
         // TODO: update ghost cell of process 0 and process max_rank to reflect
@@ -73,8 +76,9 @@ int main(int argc, char *argv[]){
         for(int i = 0; i < road_len; i++)
             road_vals[i] = new_road_vals[i];
         
-        // write to netCDF
+        // write array to netCDF
         // TODO: use MPI gather to collect results to consolodate the writing
+        netcdf_file.write(road_vals);
     }
 
     // close netCDF file

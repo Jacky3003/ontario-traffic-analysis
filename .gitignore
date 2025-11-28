@@ -43,3 +43,4 @@
 # name of compiled main program
 traffic
 *.nc
+*.png

@@ -5,6 +5,7 @@
 #include <netcdf.h>
 #include <stdio.h>
 #include <string>
+#include <rarray>
 
 /// @class NetFile
 /// @brief Wrapper class for NetCDF functionality
@@ -14,12 +15,34 @@
 class NetFile {
     public:
         int file_id;
-        int err_status;
+        int dim_id[1];
+        int var_id;
+        size_t offset[1];
+        size_t block[1];
+
         /// @brief constructor for creating a NetCDF file using this wrapper
-        /// @param filename name of the file to create
-        NetFile(std::string filename);
+        /// @param filename   name of the file to create
+        /// @param block_size size of the block to write each time.
+        /// @note this function also opens the file as well, so be sure to close when done
+        NetFile(std::string filename, int block_size);
+
         /// @brief closes the NetCDF file
         void close();
+
+        /// @brief defines the file of the netCDF file to write
+        ///        this includes defining the dimension, parameters
+        ///        and variables
+        /// @param x column dimension of the matrix
+        /// @param y row dimension of the matrix
+        void define_file(int x, int y);
+
+        /// @brief writes an array to the NetCDF file
+        /// @param arr the array of doubles to write
+        void write(rarray<double, 1> arr);
+
+        /// @brief handles errors regarding calls to NetCDF
+        /// @param err the error to handle
+        void handle_err(int err);
 };
 
 /// @brief function that finds the number of values in a given
