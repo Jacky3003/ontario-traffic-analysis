@@ -40,7 +40,8 @@
 # debug information files
 *.dwo
 
-# name of compiled main program
+# name of compiled main program plus extra files to ignore
 traffic
 *.nc
 *.png
+*.txt

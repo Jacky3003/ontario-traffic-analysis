@@ -2,7 +2,7 @@
 
 ## About this Project
 
-This project aims to give a visualization of traffic density with respect to time and the position of car density on a 1-D road.
+This project aims to give a visualization of traffic density with respect to time and the position of car density on a 1-D road. There are two choices of analysis that is covered here. First, density can be mapped as a set of ordered discrete points from a trigonometric function. Secondly, an attempt is made to model traffic density of Ontario based on [data supplied by Statistics Canada](https://www150.statcan.gc.ca/n1/pub/71-607-x/71-607-x2022018-eng.htm).
 
 ## Compile the Code
 
@@ -29,4 +29,7 @@ $ ./traffic data/<path-to-file>.data
 ```
 A sample file called ```sample.data``` is in the ```src/data``` directory to give a sample for what format the program expects.
 
-## Profiling the Code
+## Extra Documentation:
+- Running the profiling for the code: 
+- Python scripts documentation: 
+- Run the program with data provided by Statistics Canada:

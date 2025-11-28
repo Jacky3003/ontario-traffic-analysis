@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -O3 --std=c++14
+CFLAGS = -O3 -g -pg --std=c++14
 LDFLAGS = -lnetcdf
 
 CLEAN = rm -f

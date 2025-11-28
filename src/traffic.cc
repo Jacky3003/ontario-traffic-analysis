@@ -14,10 +14,10 @@ int main(int argc, char *argv[]){
 
     // TODO: relevant file defined parameters set on process 0 should be broadcast on MPI
     int road_len;
-    road_len = (file_path.length() == 0) ? 100: file_road_size(file_path);
+    road_len = (file_path.length() == 0) ? 1000: file_road_size(file_path);
 
     // parameters per process
-    int timesteps = 10000;
+    int timesteps = 100000;
     int scaling_factor = 100;
     double x_delta = (double)(1.0/road_len);
     double t_delta = (double)(1.0/timesteps);
