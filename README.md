@@ -16,13 +16,13 @@ Code compilation should work after gathering the nessecary libraries on the clus
 First ```cd``` into the source code directory and compile the program:
 ```bash
 $ cd src
-$ make
+$ make all
 ```
 
 The program can be cleaned and re-compiled as shown below:
 ```bash
 $ make clean
-$ make
+$ make all
 ```
 
 To run a sample of the program against smooth densities based on the $sin(x)$ function, simply run the program:
