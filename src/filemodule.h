@@ -2,10 +2,14 @@
  * Module containing file libraries that are used for the program
  */
 
+
+
 #include <netcdf.h>
+#include <netcdf_par.h>
 #include <stdio.h>
 #include <string>
 #include <rarray>
+#include <mpi.h>
 #ifdef _OPENMP
 #include <omp.h>
 #endif
@@ -20,8 +24,6 @@ class NetFile {
         int file_id;
         int dim_id[1];
         int var_id;
-        size_t offset[1];
-        size_t block[1];
 
         /// @brief default constructor for non initalized NetCDF class.
         NetFile();
@@ -44,7 +46,7 @@ class NetFile {
 
         /// @brief writes an array to the NetCDF file
         /// @param arr the array of doubles to write
-        void write(rarray<double, 1> arr);
+        void write(rarray<double, 1> arr, size_t start, size_t count);
 
         /// @brief handles errors regarding calls to NetCDF
         /// @param err the error to handle

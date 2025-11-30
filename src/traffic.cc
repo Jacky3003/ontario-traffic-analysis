@@ -33,7 +33,7 @@ int main(int argc, char *argv[]){
 
     int road_len;
     if (rank == 0){
-        road_len = (parser.filepath.length() == 0) ? 1000: file_road_size(parser.filepath);
+        road_len = (parser.filepath.length() == 0) ? 10: file_road_size(parser.filepath);
     }
     MPI_Bcast(&road_len, 1, MPI_INT, 0, MPI_COMM_WORLD);
     if (road_len % size != 0){
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]){
     }
 
     // parameters per process
-    int timesteps = 10000;
+    int timesteps = 10;
     int scaling_factor = 100;
     double x_delta = (double)(1.0/road_len);
     double t_delta = (double)(1.0/timesteps);
@@ -57,11 +57,9 @@ int main(int argc, char *argv[]){
     rarray<double, 1> process_road_vals(process_road_len + 2);
 
     // set up dependencies for process 0
-    NetFile netcdf_file;
+    NetFile netcdf_file("results.nc", road_len);
+    netcdf_file.define_file(road_len, timesteps + 1);
     if (rank == 0){
-        netcdf_file = NetFile("results.nc", road_len);
-        netcdf_file.define_file(road_len, timesteps + 1);
-
         // initalize values for array at t = 0
         if (parser.filepath.length() == 0)
             arraysin(0, road_len, scaling_factor, x_delta, road_vals);
@@ -70,15 +68,16 @@ int main(int argc, char *argv[]){
 
         // get the maximum traffic density based on the starting array
         max_density = *std::max_element(road_vals.begin(), road_vals.end());
-
-        // inital netCDF write
-        netcdf_file.write(road_vals);
     }
+    size_t start = rank * process_road_len;
+    size_t count = process_road_len;
 
     MPI_Bcast(&max_density, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MPI_Scatter(road_vals.data(), process_road_len, MPI_DOUBLE,
         &process_road_vals.data()[1], process_road_len, MPI_DOUBLE,
         0, MPI_COMM_WORLD);
+    
+    netcdf_file.write(process_road_vals, start, count);
 
     for(int t = 0; t < timesteps; t++){
 
@@ -110,18 +109,15 @@ int main(int argc, char *argv[]){
             process_road_len)
         for(int i = 1; i <= process_road_len; i++)
             process_road_vals[i] = new_road_vals[i];
-        
-        // gather results and write array to netCDF
-        MPI_Gather(&process_road_vals.data()[1], process_road_len, MPI_DOUBLE,
-            road_vals.data(), process_road_len, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-        if (rank == 0)
-            netcdf_file.write(road_vals);
+        size_t start = rank * process_road_len;
+        size_t count = process_road_len;
+        size_t offset = (t+1) * road_len;
+        netcdf_file.write(process_road_vals, start + offset, count);
     }
 
     // close netCDF file
-    if (rank == 0)
-        netcdf_file.close();
+    netcdf_file.close();
     
     // close MPI
     MPI_Finalize();

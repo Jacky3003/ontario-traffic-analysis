@@ -1,9 +1,8 @@
 #include "filemodule.h"
 
 NetFile::NetFile(std::string filename, int block_size){
-    handle_err(nc_create(filename.c_str(), NC_CLOBBER | NC_64BIT_DATA, &file_id));
-    offset[0] = {0};
-    block[0] = {(size_t)block_size};
+    handle_err(nc_create_par(filename.c_str(), NC_CLOBBER | NC_64BIT_DATA, MPI_COMM_WORLD,
+        MPI_INFO_NULL, &file_id));
 }
 
 NetFile::NetFile(){}
@@ -20,12 +19,14 @@ void NetFile::define_file(int x, int y){
     handle_err(nc_def_var(file_id, "data", NC_DOUBLE, 1, dim_id, &var_id));
     nc_put_att_int(file_id, NC_GLOBAL, "time_steps", NC_INT, 1, &y);
     nc_put_att_int(file_id, NC_GLOBAL, "road_len", NC_INT, 1, &x);
+    handle_err(nc_var_par_access(file_id, var_id, NC_COLLECTIVE));
     handle_err(nc_enddef(file_id));
 }
 
-void NetFile::write(rarray<double, 1> arr){
-    handle_err(nc_put_vara_double(file_id, var_id, offset, block, arr.data()));
-    offset[0] += block[0];
+void NetFile::write(rarray<double, 1> arr, size_t start, size_t count){
+    size_t s[1] = {start};
+    size_t c[1] = {count};
+    handle_err(nc_put_vara_double(file_id, var_id, s, c, &arr.data()[1]));
 }
 
 void NetFile::handle_err(int err){
