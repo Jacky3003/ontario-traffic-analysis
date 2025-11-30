@@ -34,7 +34,7 @@ int main(int argc, char *argv[]){
     double x_delta = (double)(1.0/road_len);
     double t_delta = (double)(1.0/timesteps);
     double time_dist_ratio = t_delta/x_delta;
-    double max_velocity = 1.0;
+    double max_velocity = 60.0;
     double max_density;
     process_road_len = road_len/size;
     rarray<double, 1> road_vals(road_len);
