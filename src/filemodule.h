@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include <string>
 #include <rarray>
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 
 /// @class NetFile
 /// @brief Wrapper class for NetCDF functionality

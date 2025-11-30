@@ -4,6 +4,10 @@
 
 #include <rarray>
 #include <string>
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 #include "mathfunctions.h"
 
 /// @brief function that initalizes an array of values

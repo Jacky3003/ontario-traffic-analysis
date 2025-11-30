@@ -1,6 +1,8 @@
 #include "filemodule.h"
 
 NetFile::NetFile(std::string filename, int block_size){
+    // the NC_64BIT_DATA option will work with higher dimensions
+    // but may break Pythons NetCDF reading
     handle_err(nc_create(filename.c_str(), NC_CLOBBER, &file_id));
     offset[0] = {0};
     block[0] = {(size_t)block_size};
@@ -14,7 +16,8 @@ void NetFile::close(){
 
 void NetFile::define_file(int x, int y){
     int def_dim_id;
-    handle_err(nc_def_dim(file_id, "traffic_density", x*y, &def_dim_id));
+    size_t dim = (size_t)x*(size_t)y;
+    handle_err(nc_def_dim(file_id, "traffic_density", dim, &def_dim_id));
     dim_id[0] = def_dim_id;
     handle_err(nc_def_var(file_id, "data", NC_DOUBLE, 1, dim_id, &var_id));
     nc_put_att_int(file_id, NC_GLOBAL, "time_steps", NC_INT, 1, &y);

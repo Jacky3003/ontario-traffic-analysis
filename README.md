@@ -22,20 +22,24 @@ $ make all
 The program can be cleaned and re-compiled as shown below (note that cleaning will also delete the results file that is created by the program):
 ```bash
 $ make clean
-$ make all
+$ make all # to compile with pure MPI
+$ make trafficomp # to compile with MPI + OpenMP
 ```
 
 To run a sample of the program against smooth densities based on the $sin(x)$ function, simply run the program:
 ```bash
 $ ./traffic
-$ # for MPI support (where process number via -n is a multiple of problem size)
+$ # for MPI support (where process amount via -n is a multiple of problem size)
 $ mpirun -n 1 ./traffic
+$ # for OpenMP support (where thread amount is specified with -t )
+$ mpirun -n 1 ./trafficomp -t 2
 ```
 
 To run the program based on a preset of densities based on a written ```.data``` file, run the following (if the file is located in the ```src/data``` directory):
 ```bash
-$ ./traffic data/<path-to-file>.data
-$ mpirun -n 1 ./traffic data/<path-to-file>.data
+$ ./traffic -f data/<path-to-file>.data
+$ mpirun -n 1 ./traffic -f data/<path-to-file>.data
+$ mpirun -n 1 ./trafficomp -f data/<path-to-file>.data -t 2
 ```
 A sample file called ```sample.data``` is in the ```src/data``` directory to give a sample for what format the program expects.
 

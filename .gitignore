@@ -42,6 +42,7 @@
 
 # name of compiled main program plus extra files to ignore
 traffic
+trafficomp
 *.nc
 *.png
 *.txt

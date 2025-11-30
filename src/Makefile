@@ -3,23 +3,36 @@
 # unused flags
 PROF = -g -pg
 CCSTD = g++
-LDFLAGOMP = -fopenmp
 
 # used flags
 CC = mpicxx
 CFLAGS = -O3 --std=c++14
 LDFLAGS = -lnetcdf
+LDFLAGOMP = -fopenmp
 
 CLEAN = rm -f
 
 all: traffic
 
+# compile main module with OpenMP
+
+trafficomp: trafficomp.o mathfunctions.o filemodule.o arrayinitomp.o cliargs.o
+	${CC} ${CFLAGS} ${LDFLAGOMP} -o $@ $^ ${LDFLAGS}
+
+trafficomp.o: traffic.cc mathfunctions.h filemodule.h arrayinit.h cliargs.h
+	${CC} ${CFLAGS} ${LDFLAGOMP} -c -o $@ $<
+
+# compile other modules with OpenMP
+
+arrayinitomp.o: arrayinit.cc arrayinit.h mathfunctions.h
+	${CC} ${CFLAGS} ${LDFLAGOMP} -c -o $@ $<
+
 # compile main module
 
-traffic: traffic.o mathfunctions.o filemodule.o arrayinit.o
+traffic: traffic.o mathfunctions.o filemodule.o arrayinit.o cliargs.o
 	${CC} ${CFLAGS} -o $@ $^ ${LDFLAGS}
 
-traffic.o: traffic.cc mathfunctions.h filemodule.h arrayinit.h
+traffic.o: traffic.cc mathfunctions.h filemodule.h arrayinit.h cliargs.h
 	${CC} ${CFLAGS} -c -o $@ $<
 
 # compile other modules
@@ -33,7 +46,11 @@ filemodule.o: filemodule.cc filemodule.h
 arrayinit.o: arrayinit.cc arrayinit.h mathfunctions.h
 	${CC} ${CFLAGS} -c -o $@ $<
 
+cliargs.o: cliargs.cc cliargs.h
+	${CC} ${CFLAGS} -c -o $@ $<
+
 clean:
-	${CLEAN} traffic.o mathfunctions.o filemodule.o arrayinit.o
-	${CLEAN} traffic
+	${CLEAN} traffic.o trafficomp.o mathfunctions.o filemodule.o arrayinit.o cliargs.o
+	${CLEAN} trafficomp.o filemoduleomp.o arrayinitomp.o
+	${CLEAN} traffic trafficomp
 	${CLEAN} results.nc
