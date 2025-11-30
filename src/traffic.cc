@@ -44,7 +44,7 @@ int main(int argc, char *argv[]){
     }
 
     // parameters per process
-    int timesteps = 100000;
+    int timesteps = 10000;
     int scaling_factor = 100;
     double x_delta = (double)(1.0/road_len);
     double t_delta = (double)(1.0/timesteps);

@@ -1,8 +1,8 @@
-from scipy.io import netcdf_file
 import numpy as np
 import matplotlib.pyplot as plt
+from netCDF4 import Dataset
 
-with netcdf_file("data/results.nc", "r") as currfile:
+with Dataset("data/results.nc", "r", format="NETCDF4") as currfile:
     t = currfile.time_steps
     l = currfile.road_len
 
