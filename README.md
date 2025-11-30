@@ -40,6 +40,6 @@ $ mpirun -n 1 ./traffic data/<path-to-file>.data
 A sample file called ```sample.data``` is in the ```src/data``` directory to give a sample for what format the program expects.
 
 ## Extra Documentation:
-- Running the profiling for the code: 
-- Python scripts documentation: 
-- Run the program with data provided by Statistics Canada:
+- [Running the profiling for the code](docs/profiling.md)
+- [Python scripts how-to](docs/scripts.md)
+- [Run the program with data provided by Statistics Canada](docs/statcan.md)
