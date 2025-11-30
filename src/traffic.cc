@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
         else
             arrayfile(road_vals, file_path);
 
-        // get the maximum traffic density based on the array
+        // get the maximum traffic density based on the starting array
         max_density = *std::max_element(road_vals.begin(), road_vals.end());
 
         // inital netCDF write
@@ -61,8 +61,7 @@ int main(int argc, char *argv[]){
     }
 
     MPI_Bcast(&max_density, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Scatter(
-        road_vals.data(), process_road_len, MPI_DOUBLE,
+    MPI_Scatter(road_vals.data(), process_road_len, MPI_DOUBLE,
         &process_road_vals.data()[1], process_road_len, MPI_DOUBLE,
         0, MPI_COMM_WORLD);
 
@@ -77,6 +76,7 @@ int main(int argc, char *argv[]){
             MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
         // calculate the flux logic into the new cells (avoiding ghost cells)
+        // TODO: add OpenMP pragma
         for(int i = 1; i <= process_road_len; i++){
 
             double k_curr, k_next, k_prev;

@@ -2,7 +2,7 @@ from scipy.io import netcdf_file
 import numpy as np
 import matplotlib.pyplot as plt
 
-with netcdf_file("data/results-large.nc", "r") as currfile:
+with netcdf_file("data/results.nc", "r") as currfile:
     t = currfile.time_steps
     l = currfile.road_len
 

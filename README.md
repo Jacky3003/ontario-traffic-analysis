@@ -28,13 +28,14 @@ $ make all
 To run a sample of the program against smooth densities based on the $sin(x)$ function, simply run the program:
 ```bash
 $ ./traffic
-$ # for MPI support (where process number is a multiple of problem size)
+$ # for MPI support (where process number via -n is a multiple of problem size)
 $ mpirun -n 1 ./traffic
 ```
 
 To run the program based on a preset of densities based on a written ```.data``` file, run the following (if the file is located in the ```src/data``` directory):
 ```bash
 $ ./traffic data/<path-to-file>.data
+$ mpirun -n 1 ./traffic data/<path-to-file>.data
 ```
 A sample file called ```sample.data``` is in the ```src/data``` directory to give a sample for what format the program expects.
 
