@@ -6,6 +6,8 @@ NetFile::NetFile(std::string filename, int block_size){
     block[0] = {(size_t)block_size};
 }
 
+NetFile::NetFile(){}
+
 void NetFile::close(){
     handle_err(nc_close(file_id));
 }

@@ -19,7 +19,7 @@ $ cd src
 $ make all
 ```
 
-The program can be cleaned and re-compiled as shown below:
+The program can be cleaned and re-compiled as shown below (note that cleaning will also delete the results file that is created by the program):
 ```bash
 $ make clean
 $ make all
@@ -28,6 +28,8 @@ $ make all
 To run a sample of the program against smooth densities based on the $sin(x)$ function, simply run the program:
 ```bash
 $ ./traffic
+$ # for MPI support (where process number is a multiple of problem size)
+$ mpirun -n 1 ./traffic
 ```
 
 To run the program based on a preset of densities based on a written ```.data``` file, run the following (if the file is located in the ```src/data``` directory):

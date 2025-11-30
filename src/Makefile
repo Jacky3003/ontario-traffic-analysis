@@ -1,5 +1,13 @@
-CC = g++
-CFLAGS = -O3 -g -pg --std=c++14
+# TODO: add separate builds for serial, MPI, OpenMP, and MPI + OpenMP
+
+# unused flags
+PROF = -g -pg
+CCSTD = g++
+LDFLAGOMP = -fopenmp
+
+# used flags
+CC = mpicxx
+CFLAGS = -O3 --std=c++14
 LDFLAGS = -lnetcdf
 
 CLEAN = rm -f

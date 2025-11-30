@@ -20,6 +20,9 @@ class NetFile {
         size_t offset[1];
         size_t block[1];
 
+        /// @brief default constructor for non initalized NetCDF class.
+        NetFile();
+
         /// @brief constructor for creating a NetCDF file using this wrapper
         /// @param filename   name of the file to create
         /// @param block_size size of the block to write each time.
