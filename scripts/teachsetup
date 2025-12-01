@@ -2,5 +2,7 @@ module load StdEnv/2023
 module load netcdf/4.9.2
 module load gnuplot python/3 scipy-stack/2025a
 module load rarray
+module load pnetcdf/1.12.3
+module load netcdf-mpi/4.9.2
 module load netCDF4/1.6.4
 module list

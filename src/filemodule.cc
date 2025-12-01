@@ -1,7 +1,7 @@
 #include "filemodule.h"
 
 NetFile::NetFile(std::string filename, int block_size){
-    handle_err(nc_create_par(filename.c_str(), NC_CLOBBER | NC_64BIT_DATA, MPI_COMM_WORLD,
+    handle_err(nc_create_par(filename.c_str(), NC_CLOBBER | NC_NETCDF4, MPI_COMM_WORLD,
         MPI_INFO_NULL, &file_id));
 }
 

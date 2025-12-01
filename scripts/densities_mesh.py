@@ -27,6 +27,7 @@ with Dataset("data/results.nc", "r") as currfile:
 
     plt.savefig("densities_mesh.png")
 
+    # used to demo the mesh
     plt.show()
 
     del file_data

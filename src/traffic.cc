@@ -28,12 +28,16 @@ int main(int argc, char *argv[]){
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
+    // MPI timer start
+    MPI_Barrier(MPI_COMM_WORLD);
+    double start_time = MPI_Wtime();
+
     int left = (rank - 1 < 0) ? size - 1 : rank - 1;
     int right = (rank + 1 >= size) ? 0 : rank +1;
 
     int road_len;
     if (rank == 0){
-        road_len = (parser.filepath.length() == 0) ? 10: file_road_size(parser.filepath);
+        road_len = (parser.filepath.length() == 0) ? 500: file_road_size(parser.filepath);
     }
     MPI_Bcast(&road_len, 1, MPI_INT, 0, MPI_COMM_WORLD);
     if (road_len % size != 0){
@@ -44,12 +48,12 @@ int main(int argc, char *argv[]){
     }
 
     // parameters per process
-    int timesteps = 10;
+    int timesteps = 50000;
     int scaling_factor = 100;
     double x_delta = (double)(1.0/road_len);
     double t_delta = (double)(1.0/timesteps);
     double time_dist_ratio = t_delta/x_delta;
-    double max_velocity = 1.0;
+    double max_velocity = 30.0;
     double max_density;
     process_road_len = road_len/size;
     rarray<double, 1> road_vals(road_len);
@@ -85,8 +89,8 @@ int main(int argc, char *argv[]){
             &process_road_vals.data()[process_road_len+1], 1, MPI_DOUBLE, right, 0,
             MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-        MPI_Sendrecv(&process_road_vals.data()[process_road_len], 1, MPI_DOUBLE, right, 0,
-            &process_road_vals.data()[0], 1, MPI_DOUBLE, left, 0,
+        MPI_Sendrecv(&process_road_vals.data()[process_road_len], 1, MPI_DOUBLE, right, 1,
+            &process_road_vals.data()[0], 1, MPI_DOUBLE, left, 1,
             MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
         // calculate the flux logic into the new cells
@@ -119,7 +123,13 @@ int main(int argc, char *argv[]){
     // close netCDF file
     netcdf_file.close();
     
-    // close MPI
+    // close MPI and stop timer
+    MPI_Barrier(MPI_COMM_WORLD);
+    double end_time = MPI_Wtime();
     MPI_Finalize();
+
+    if (rank == 0) {
+        printf("| %d | %f |\n", size, end_time-start_time);
+    }
     return 0;
 }

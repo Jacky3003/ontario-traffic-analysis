@@ -7,7 +7,7 @@ CCSTD = g++
 # used flags
 CC = mpicxx
 CFLAGS = -O3 --std=c++14
-LDFLAGS = -lnetcdf
+LDFLAGS = $(shell nc-config --cflags) $(shell nc-config --libs)
 LDFLAGOMP = -fopenmp
 
 CLEAN = rm -f
