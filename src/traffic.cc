@@ -13,7 +13,6 @@
 int main(int argc, char *argv[]){
 
     // parse cli arguments
-    // TODO: Make I/O an option to the cli arguments.
     CliArgs parser(argc, argv);
 
     #ifdef _OPENMP
@@ -38,7 +37,7 @@ int main(int argc, char *argv[]){
 
     int road_len;
     if (rank == 0){
-        road_len = (parser.filepath.length() == 0) ? 100000: file_road_size(parser.filepath);
+        road_len = (parser.filepath.length() == 0) ? 5000000: file_road_size(parser.filepath);
     }
     MPI_Bcast(&road_len, 1, MPI_INT, 0, MPI_COMM_WORLD);
     if (road_len % size != 0){
@@ -49,7 +48,7 @@ int main(int argc, char *argv[]){
     }
 
     // parameters per process
-    int timesteps = 10000;
+    int timesteps = 100;
     int scaling_factor = 100;
     double x_delta = (double)(1.0/road_len);
     double t_delta = (double)(1.0/timesteps);
@@ -100,7 +99,7 @@ int main(int argc, char *argv[]){
             &process_road_vals.data()[0], 1, MPI_DOUBLE, left, 1,
             MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-        // calculate the flux logic into the new cells
+        // // calculate the flux logic into the new cells
         #pragma omp parallel for default(none) shared(process_road_len, max_velocity, max_density,\
             time_dist_ratio, new_road_vals, process_road_vals)
         for(int i = 1; i <= process_road_len; i++){
@@ -115,7 +114,7 @@ int main(int argc, char *argv[]){
             new_road_vals[i] = process_road_vals[i] - (time_dist_ratio)*(f_curr - f_prev);
         }
 
-        // copy new cell values into old cells
+        // // copy new cell values into old cells
         #pragma omp parallel for default(none) shared(process_road_vals, new_road_vals,\
             process_road_len)
         for(int i = 1; i <= process_road_len; i++)
