@@ -37,7 +37,7 @@ int main(int argc, char *argv[]){
 
     int road_len;
     if (rank == 0){
-        road_len = (parser.filepath.length() == 0) ? 5000000: file_road_size(parser.filepath);
+        road_len = (parser.filepath.length() == 0) ? 100: file_road_size(parser.filepath);
     }
     MPI_Bcast(&road_len, 1, MPI_INT, 0, MPI_COMM_WORLD);
     if (road_len % size != 0){
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
     }
 
     // parameters per process
-    int timesteps = 100;
+    int timesteps = 10000;
     int scaling_factor = 100;
     double x_delta = (double)(1.0/road_len);
     double t_delta = (double)(1.0/timesteps);

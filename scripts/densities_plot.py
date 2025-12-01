@@ -27,6 +27,6 @@ with Dataset("data/results.nc", "r", format="NETCDF4") as currfile:
         ax.plot(traffic_matrix[t_plot, :])
         idx += 1
 
-    plt.savefig("densities.png")
+    plt.savefig("densities_plot.png")
 
     del file_data
