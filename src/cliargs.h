@@ -11,6 +11,7 @@
         int argcount;
         std::string filepath = "";
         int threadcount = 1;
+        bool enable_write = false;
 
         /// @brief argument parser for command line arguments
         /// @param argcnt   amount of arguments to parse

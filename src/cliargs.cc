@@ -15,6 +15,9 @@ CliArgs::CliArgs(int argcnt, char **argval){
             i++;
             threadcount = atoi(argval[i]);
         }
+        else if (arg == "-io"){
+            enable_write = true;
+        }
         else{
             std::cerr << "Invalid command line argument" << std::endl;
             help_msg(argval[0]);
@@ -29,6 +32,7 @@ void help_msg(char *progname){
               << "Options:\n"
               << "\t-h\t\tShow this help message\n"
               << "\t-f <path-to-file> \tSpecify the .data file path\n"
-              << "\t-t <num-threads> \tNumber of threads to use (if compiled with OpenMP)"
+              << "\t-t <num-threads> \tNumber of threads to use (if compiled with OpenMP)\n"
+              << "\t-io <num-threads> \tEnable writing to I/O, disabled by default"
               << std::endl;
 }

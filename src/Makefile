@@ -16,7 +16,7 @@ all: traffic
 
 # compile main module with OpenMP
 
-trafficomp: trafficomp.o mathfunctions.o filemodule.o arrayinitomp.o cliargs.o
+trafficomp: trafficomp.o mathfunctionsomp.o filemoduleomp.o arrayinitomp.o cliargsomp.o
 	${CC} ${CFLAGS} ${LDFLAGOMP} -o $@ $^ ${LDFLAGS}
 
 trafficomp.o: traffic.cc mathfunctions.h filemodule.h arrayinit.h cliargs.h
@@ -25,6 +25,15 @@ trafficomp.o: traffic.cc mathfunctions.h filemodule.h arrayinit.h cliargs.h
 # compile other modules with OpenMP
 
 arrayinitomp.o: arrayinit.cc arrayinit.h mathfunctions.h
+	${CC} ${CFLAGS} ${LDFLAGOMP} -c -o $@ $<
+
+mathfunctionsomp.o: mathfunctions.cc mathfunctions.h
+	${CC} ${CFLAGS} ${LDFLAGOMP} -c -o $@ $<
+
+filemoduleomp.o: filemodule.cc filemodule.h
+	${CC} ${CFLAGS} ${LDFLAGOMP} -c -o $@ $<
+
+cliargsomp.o: cliargs.cc cliargs.h
 	${CC} ${CFLAGS} ${LDFLAGOMP} -c -o $@ $<
 
 # compile main module
@@ -51,6 +60,6 @@ cliargs.o: cliargs.cc cliargs.h
 
 clean:
 	${CLEAN} traffic.o trafficomp.o mathfunctions.o filemodule.o arrayinit.o cliargs.o
-	${CLEAN} trafficomp.o filemoduleomp.o arrayinitomp.o
+	${CLEAN} trafficomp.o filemoduleomp.o arrayinitomp.o mathfunctionsomp.o cliargsomp.o
 	${CLEAN} traffic trafficomp
 	${CLEAN} results.nc

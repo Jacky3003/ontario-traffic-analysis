@@ -2,8 +2,6 @@
  * Module containing file libraries that are used for the program
  */
 
-
-
 #include <netcdf.h>
 #include <netcdf_par.h>
 #include <stdio.h>
