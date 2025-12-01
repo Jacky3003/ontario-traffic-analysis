@@ -37,7 +37,7 @@ $ # to write to I/O
 $ mpirun -n 1 ./trafficomp -t 2 -io
 ```
 
-To run the program based on a preset of densities based on a written ```.data``` file, run the following (if the file is located in the ```src/data``` directory):
+To run the program based on a preset of densities based on a written ```.data``` file, see the examples below(if the file is located in the ```src/data``` directory):
 ```bash
 $ ./traffic -f data/<path-to-file>.data
 $ mpirun -n 1 ./traffic -f data/<path-to-file>.data
