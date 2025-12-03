@@ -32,16 +32,15 @@ $ ./traffic
 $ # for MPI support (where process amount via -n is a multiple of problem size)
 $ mpirun -n 1 ./traffic
 $ # for OpenMP support (where thread amount is specified with -t )
-$ mpirun -n 1 ./trafficomp -t 2
+$ mpirun -n 1 -x OMP_NUM_THREADS=2 ./trafficomp
 $ # to write to I/O
-$ mpirun -n 1 ./trafficomp -t 2 -io
+$ mpirun -n 1 -x OMP_NUM_THREADS=2 ./trafficomp -io
 ```
 
 To run the program based on a preset of densities based on a written ```.data``` file, see the examples below (if the file is located in the ```src/data``` directory):
 ```bash
-$ ./traffic -f data/<path-to-file>.data
 $ mpirun -n 1 ./traffic -f data/<path-to-file>.data
-$ mpirun -n 1 ./trafficomp -f data/<path-to-file>.data -t 2
+$ mpirun -n 1 -x OMP_NUM_THREADS=2 ./trafficomp -f data/<path-to-file>.data
 ```
 
 For details on the options for the program, see ```cliargs.cc```

@@ -15,10 +15,6 @@ int main(int argc, char *argv[]){
     // parse cli arguments
     CliArgs parser(argc, argv);
 
-    #ifdef _OPENMP
-    omp_set_num_threads(parser.threadcount);
-    #endif
-
     // MPI parameters
     int rank;
     int size;
@@ -36,9 +32,8 @@ int main(int argc, char *argv[]){
     int right = (rank + 1 >= size) ? 0 : rank +1;
 
     int road_len;
-    if (rank == 0){
-        road_len = (parser.filepath.length() == 0) ? 100: file_road_size(parser.filepath);
-    }
+    if (rank == 0)
+        road_len = (parser.filepath.length() == 0) ? 600000000: file_road_size(parser.filepath);
     MPI_Bcast(&road_len, 1, MPI_INT, 0, MPI_COMM_WORLD);
     if (road_len % size != 0){
         if (rank == 0)
@@ -48,7 +43,7 @@ int main(int argc, char *argv[]){
     }
 
     // parameters per process
-    int timesteps = 10000;
+    int timesteps = 10;
     int scaling_factor = 100;
     double x_delta = (double)(1.0/road_len);
     double t_delta = (double)(1.0/timesteps);

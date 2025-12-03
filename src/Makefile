@@ -6,7 +6,7 @@ CCSTD = g++
 
 # used flags
 CC = mpicxx
-CFLAGS = -O3 --std=c++14
+CFLAGS = -O3 -ffast-math -fno-trapping-math -fno-math-errno -flto --std=c++14
 LDFLAGS = $(shell nc-config --cflags) $(shell nc-config --libs)
 LDFLAGOMP = -fopenmp
 
