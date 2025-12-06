@@ -14,6 +14,10 @@ CliArgs::CliArgs(int argcnt, char **argval){
         else if (arg == "-io"){
             enable_write = true;
         }
+        else if (arg == "-s"){
+            i++;
+            road_len = atoi(argval[i]);
+        }
         else{
             std::cerr << "Invalid command line argument" << std::endl;
             help_msg(argval[0]);
@@ -28,6 +32,7 @@ void help_msg(char *progname){
               << "Options:\n"
               << "\t-h\t\tShow this help message\n"
               << "\t-f <path-to-file> \tSpecify the .data file path\n"
+              << "\t-s <road-length> \tSpecifies the size of the road length, ignored if a file is passed in\n"
               << "\t-io <num-threads> \tEnable writing to I/O, disabled by default"
               << std::endl;
 }

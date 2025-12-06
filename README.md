@@ -31,7 +31,7 @@ To run a sample of the program against smooth densities based on the $sin(x)$ fu
 $ ./traffic
 $ # for MPI support (where process amount via -n is a multiple of problem size)
 $ mpirun -n 1 ./traffic
-$ # for OpenMP support (where thread amount is specified with -t )
+$ # for OpenMP support (where thread amount is specified with -x and environment variable)
 $ mpirun -n 1 -x OMP_NUM_THREADS=2 ./trafficomp
 $ # to write to I/O
 $ mpirun -n 1 -x OMP_NUM_THREADS=2 ./trafficomp -io
@@ -43,11 +43,11 @@ $ mpirun -n 1 ./traffic -f data/<path-to-file>.data
 $ mpirun -n 1 -x OMP_NUM_THREADS=2 ./trafficomp -f data/<path-to-file>.data
 ```
 
-For details on the options for the program, see ```cliargs.cc```
+For details on the options for the program, see ```cliargs.cc``` or specify the help command with ```-h```.
 
 A sample file called ```sample.data``` is in the ```src/data``` directory to give a sample for what format the program expects.
 
 ## Extra Documentation:
 - [Running the profiling for the code](docs/profiling.md)
-- [Python scripts how-to](docs/scripts.md)
+- [Repository scripts how to](docs/scripts.md)
 - [Run the program with data provided by Statistics Canada](docs/statcan.md)
