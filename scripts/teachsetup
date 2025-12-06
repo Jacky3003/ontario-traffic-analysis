@@ -1,0 +1,8 @@
+module load StdEnv/2023
+module load netcdf/4.9.2
+module load gcc/12.3
+module load gnuplot python/3.11.5 scipy-stack/2024a
+module load rarray
+module load netcdf-mpi/4.9.2
+module load mpi4py/3.1.4
+module list

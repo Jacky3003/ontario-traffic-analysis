@@ -1,16 +1,47 @@
-CC = g++
-CFLAGS = -O3 --std=c++14
+# TODO: add separate builds for serial, MPI, OpenMP, and MPI + OpenMP
+
+# unused flags
+PROF = -g -pg
+CCSTD = g++
+
+# used flags
+CC = mpicxx
+CFLAGS = -O3 -ffast-math -fno-trapping-math -fno-math-errno -flto --std=c++14
+LDFLAGS = $(shell nc-config --cflags) $(shell nc-config --libs)
+LDFLAGOMP = -fopenmp
 
 CLEAN = rm -f
 
 all: traffic
 
+# compile main module with OpenMP
+
+trafficomp: trafficomp.o mathfunctionsomp.o filemoduleomp.o arrayinitomp.o cliargsomp.o
+	${CC} ${CFLAGS} ${LDFLAGOMP} -o $@ $^ ${LDFLAGS}
+
+trafficomp.o: traffic.cc mathfunctions.h filemodule.h arrayinit.h cliargs.h
+	${CC} ${CFLAGS} ${LDFLAGOMP} -c -o $@ $<
+
+# compile other modules with OpenMP
+
+arrayinitomp.o: arrayinit.cc arrayinit.h mathfunctions.h
+	${CC} ${CFLAGS} ${LDFLAGOMP} -c -o $@ $<
+
+mathfunctionsomp.o: mathfunctions.cc mathfunctions.h
+	${CC} ${CFLAGS} ${LDFLAGOMP} -c -o $@ $<
+
+filemoduleomp.o: filemodule.cc filemodule.h
+	${CC} ${CFLAGS} ${LDFLAGOMP} -c -o $@ $<
+
+cliargsomp.o: cliargs.cc cliargs.h
+	${CC} ${CFLAGS} ${LDFLAGOMP} -c -o $@ $<
+
 # compile main module
 
-traffic: traffic.o mathfunctions.o output.o
-	${CC} ${CFLAGS} -o $@ $^
+traffic: traffic.o mathfunctions.o filemodule.o arrayinit.o cliargs.o
+	${CC} ${CFLAGS} -o $@ $^ ${LDFLAGS}
 
-traffic.o: traffic.cc mathfunctions.h output.h
+traffic.o: traffic.cc mathfunctions.h filemodule.h arrayinit.h cliargs.h
 	${CC} ${CFLAGS} -c -o $@ $<
 
 # compile other modules
@@ -18,9 +49,17 @@ traffic.o: traffic.cc mathfunctions.h output.h
 mathfunctions.o: mathfunctions.cc mathfunctions.h
 	${CC} ${CFLAGS} -c -o $@ $<
 
-output.o: output.cc output.h
+filemodule.o: filemodule.cc filemodule.h
+	${CC} ${CFLAGS} -c -o $@ $<
+
+arrayinit.o: arrayinit.cc arrayinit.h mathfunctions.h
+	${CC} ${CFLAGS} -c -o $@ $<
+
+cliargs.o: cliargs.cc cliargs.h
 	${CC} ${CFLAGS} -c -o $@ $<
 
 clean:
-	${CLEAN} traffic.o mathfunctions.o output.o
-	${CLEAN} traffic
+	${CLEAN} traffic.o trafficomp.o mathfunctions.o filemodule.o arrayinit.o cliargs.o
+	${CLEAN} trafficomp.o filemoduleomp.o arrayinitomp.o mathfunctionsomp.o cliargsomp.o
+	${CLEAN} traffic trafficomp
+	${CLEAN} results.nc
