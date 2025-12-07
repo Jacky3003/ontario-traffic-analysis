@@ -43,12 +43,12 @@ int main(int argc, char *argv[]){
     }
 
     // parameters per process
-    int timesteps = 1000;
+    int timesteps = 100000;
     int scaling_factor = 100;
     double x_delta = (double)(1.0/road_len);
     double t_delta = (double)(1.0/timesteps);
     double time_dist_ratio = t_delta/x_delta;
-    double max_velocity = 1.0;
+    double max_velocity = 15.0;
     double max_density;
     process_road_len = road_len/size;
     rarray<double, 1> road_vals(road_len);
