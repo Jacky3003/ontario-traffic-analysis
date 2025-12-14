@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 from geopy.distance import distance, lonlat
 
@@ -9,7 +11,7 @@ WKT = "WKT"
 
 if __name__ == "__main__":
 
-    # example using two points in steeles ave from the dataset
+    # example using points as intersections for steeles ave from the dataset
     # see the dataset and map below for valid street names
     # problem assumes that there exists a straight road from point A to point B
     # https://www150.statcan.gc.ca/n1/pub/71-607-x/71-607-x2022018-eng.htm
@@ -23,7 +25,13 @@ if __name__ == "__main__":
     traffic_df = traffic_df[traffic_df[CAMERA_ROAD].str.contains(street)]
     traffic_df[WKT] = traffic_df[WKT].map(lambda s: s.strip("() POINT").split(" "))
     traffic_df[WKT] = traffic_df[WKT].map(lambda s: (float(s[0]), float(s[1])))
-    traffic_df = traffic_df.sort_values(by=WKT)
+
+    # naively sort via PCA since a straight line is assumed
+    pca_data = np.array(traffic_df[WKT].values.tolist())
+    pca = PCA(n_components=1)
+    x = pca.fit_transform(pca_data)
+    traffic_df["x"] = x
+    traffic_df = traffic_df.sort_values(by="x")
 
     # distance between furthest two points
     first_pt = traffic_df.head()
