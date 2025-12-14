@@ -9,7 +9,7 @@
  class CliArgs {
     public:
         int argcount;
-        int road_len = 100000;
+        int road_len = 100;
         std::string filepath = "";
         bool enable_write = false;
 

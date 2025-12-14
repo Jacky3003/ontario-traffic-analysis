@@ -1,5 +1,17 @@
 # How to Run Sample Data From Statistics Canada
 
+## Prerequisites
+
+Ensure that the Teach source file is set up, and that the following two modules are installed afterwards (scikit-learn and geopy). For full documentation on custom python modules in Teach, see the following [link](https://docs.scinet.utoronto.ca/index.php/Installing_your_own_Python_Modules).
+
+```bash
+$ source teachsetup
+$ # note: pip installation with users is discouraged on SciNet,
+$ # it is more ideal to use virtual environments (such as conda) even on your own machine.
+$ pip install geopy
+$ pip install scikit-learn
+```
+
 ## Getting the Data
 
 Below is a step by step guide to get data from Statistics Canada containing information on traffic flow:
