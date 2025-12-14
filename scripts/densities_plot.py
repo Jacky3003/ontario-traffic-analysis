@@ -22,8 +22,8 @@ with Dataset("data/results.nc", "r", format="NETCDF4") as currfile:
     for t_plot in times_to_plot:
         ax = multiplot.add_subplot(2,2, idx)
         ax.title.set_text(f"At Time t={t_plot+1}")
-        ax.set_xlabel("Unit Distances in km")
-        ax.set_ylabel("Traffic Density in cars/km")
+        ax.set_xlabel("Unit Distances")
+        ax.set_ylabel("Traffic Density")
         ax.plot(traffic_matrix[t_plot, :])
         idx += 1
 

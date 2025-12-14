@@ -19,9 +19,9 @@ with Dataset("data/results.nc", "r") as currfile:
 
     fig = plt.figure(figsize=(10.0,10.0),dpi=100)
     ax = fig.add_subplot(111, projection="3d")
-    ax.set_xlabel("Unit Distances in km")
+    ax.set_xlabel("Unit Distances")
     ax.set_ylabel("Timesteps in Hours")
-    ax.set_zlabel("Traffic Density in cars/km")
+    ax.set_zlabel("Traffic Density")
     ax.plot_surface(meshx, meshy, traffic_matrix)
     ax.set_title("Evolution of Traffic Density")
 
