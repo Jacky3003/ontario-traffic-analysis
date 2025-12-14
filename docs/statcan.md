@@ -40,7 +40,7 @@ On the Teach cluster, be sure to run ```source teachsetup```, then run the follo
 ```bash
 python3 ont_traffic_processor.py
 ```
-The script itself will show the inital plot of how the traffic is stationed along the road.
+The script itself will show the inital plot of how the traffic is stationed along the road, a sample for the output of the script can be found in ```src/data``` for reference, which takes points on key intersections via Steeles Avenue.
 
 The ```.data``` file should then be located in the ```scripts/data``` directory, move this file into the same directory as the compiled program, and run the program similar to the following format (assuming the ```.data``` file is called ```traffic_density.data```):
 
