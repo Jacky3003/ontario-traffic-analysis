@@ -1,5 +1,3 @@
-# TODO: add separate builds for serial, MPI, OpenMP, and MPI + OpenMP
-
 # unused flags
 PROF = -g -pg
 CCSTD = g++
